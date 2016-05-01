@@ -53,4 +53,7 @@ export class Observable {
   [Symbol['observable']](){
     return this;
   }
+  static get [Symbol['species']](){
+    return this;
+  }
 }

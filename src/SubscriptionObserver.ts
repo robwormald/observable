@@ -1,21 +1,8 @@
 import {Subscription} from './Subscription'
-import {nonenumerable} from './utils'
-
-function subscriptionClosed(subscription) {
-  return subscription._observer === undefined;
-}
-
-function cleanupSubscription(subscription){
-  let cleanup = subscription._cleanup;
-  if(!cleanup){
-    return;
-  }
-  subscription._cleanup = undefined;
-  cleanup();
-}
+import {nonenumerable, cleanupSubscription, subscriptionClosed} from './utils'
 
 export class SubscriptionObserver {
-	constructor(private _subscription:Subscription){}
+	constructor(private _subscription:Subscription, private _zone:any){}
 
   @nonenumerable
   next(value?:any){
@@ -45,9 +32,10 @@ export class SubscriptionObserver {
     let subscription = this._subscription;
 
     if(subscriptionClosed(subscription)){
-      return undefined;
+      throw err;
     }
     let observer = subscription._observer;
+    subscription._observer = undefined;
 
     try {
       let errorHandler = observer.error;
@@ -65,7 +53,6 @@ export class SubscriptionObserver {
     }
     cleanupSubscription(subscription);
     return err;
-
   }
 
   @nonenumerable

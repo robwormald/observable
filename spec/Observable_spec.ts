@@ -128,4 +128,28 @@ describe('Observable', () => {
     sub.unsubscribe();
     expect(tidied).toBe(true);
   });
+
+  it('should clean up after itself on error', (done) => {
+    let tidied = false;
+    let errored = false;
+    let ticks = new Observable((observer) => {
+      setTimeout(() => {
+        observer.error('FAIL');
+      })
+      return () => {
+        tidied = true;
+      }
+    });
+    let sub = ticks.subscribe({
+      error(err){
+         errored = true;
+      }
+    });
+    setTimeout(() => {
+       expect(tidied).toBe(true);
+       expect(errored).toBe(true);
+       done();
+    }, 20)
+
+  });
 });

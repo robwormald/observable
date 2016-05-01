@@ -3,12 +3,12 @@ import {nonenumerable, cleanupFromSubscription, cleanupSubscription, closeSubscr
 
 export class Subscription {
 	private _cleanup:any;
-	constructor(public _observer, private _subscriber){
+	constructor(public _observer, private _subscriber, private _zone?:any){
 		if(Object(_observer) !== _observer){
 			throw new TypeError('Observer must be an object');
 		}
 
-		_observer = new SubscriptionObserver(this);
+		_observer = new SubscriptionObserver(this, _zone);
 
 		try {
 			let cleanup = _subscriber.call(undefined, _observer);
@@ -32,7 +32,6 @@ export class Subscription {
     if(subscriptionClosed(this)){
       cleanupSubscription(this);
     }
-    return;
 
 	}
   @nonenumerable
