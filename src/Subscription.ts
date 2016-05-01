@@ -1,30 +1,5 @@
 import {SubscriptionObserver} from './SubscriptionObserver'
-import {nonenumerable} from './utils'
-
-function cleanupFromSubscription(subscription){
-	return () => subscription.unsubscribe();
-}
-
-function subscriptionClosed(subscription) {
-  return subscription._observer === undefined;
-}
-
-function cleanupSubscription(subscription){
-  let cleanup = subscription._cleanup;
-  if(!cleanup){
-    return;
-  }
-  subscription._cleanup = undefined;
-  cleanup();
-}
-
-function closeSubscription(subscription) {
-  if (subscriptionClosed(subscription)){
-    return;
-  }
-  subscription._observer = undefined;
-  cleanupSubscription(subscription);
-}
+import {nonenumerable, cleanupFromSubscription, cleanupSubscription, closeSubscription, subscriptionClosed} from './utils'
 
 export class Subscription {
 	private _cleanup:any;

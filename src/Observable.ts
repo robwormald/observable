@@ -26,4 +26,31 @@ export class Observable {
 	subscribe(observer:Observer): Subscription {
 		return new Subscription(observer, this._subscriber);
 	}
+
+  forEach(fn:(value:any) => void): Promise<any> {
+    return new Promise((resolve, reject) => {
+      if(typeof fn !== 'function'){
+        throw new TypeError(`${fn} is not a function`);
+      }
+        let subscription = this.subscribe({
+          next(value){
+            try {
+              return fn(value);
+            } catch (err) {
+              reject(err);
+              subscription.unsubscribe();
+            }
+          },
+          error(err){
+            reject(err);
+          },
+          complete(){
+            resolve();
+          }
+        });
+    });
+  }
+  [Symbol['observable']](){
+    return this;
+  }
 }

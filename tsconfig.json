@@ -1,15 +1,16 @@
 {
-    "compilerOptions": {
-        "module": "commonjs",
-        "target": "es5",
-        "noImplicitAny": false,
-        "sourceMap": false,
-		"outDir": "dist",
-		"experimentalDecorators": true
-    },
-    "files": [
-      "typings/browser.d.ts",
-		  "src/Observable.ts",
-      "spec/Observable_spec.ts"
-	  ]
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "noImplicitAny": false,
+    "sourceMap": false,
+    "outDir": "dist",
+    "lib": ["es5", "es2015.promise", "es2015.symbol", "dom"],
+    "experimentalDecorators": true
+  },
+  "files": [
+    "typings/browser.d.ts",
+    "src/Observable.ts",
+    "spec/Observable_spec.ts"
+  ]
 }
